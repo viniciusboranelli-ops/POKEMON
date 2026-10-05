@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pokédex</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <main class="pokedex">
+
+
+        <h1>Pokédex</h1>
+
+        <div class="pesquisa">
+
+            <input
+                type="text"
+                id="pokemon"
+                placeholder="Digite o nome ou número"
+                autocomplete="off"
+            >
+
+            <button id="buscar">
+                Buscar
+            </button>
+
+        </div>
+
+      
+        <p id="mensagem"></p>
+        <section class="card">
+            <div class="cabecalho">
+                <h2 id="nome">
+                    Pikachu
+                </h2>
+                <span id="numero">
+                    #025
+                </span>
+            </div>
+
+           
+            <div class="imagem-container">
+
+                <img
+                    id="imagem"
+                    src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png&quot;
+                    alt="Pikachu">
+
+            </div>
+
+            
+            <div class="informacoes">
+
+                <div class="linha">
+                    <strong>Tipo:</strong>
+                    <div id="tipos">
+                        <span class="tipo eletrico">
+                            Elétrico
+                        </span>
+                    </div>
+                </div>
+
+                
+
+    </main>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
