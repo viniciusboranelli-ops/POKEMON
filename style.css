@@ -1,0 +1,59 @@
+:root {
+    --roxo: #6f42c1;
+    --roxo-escuro: #59359a;
+  }
+  
+  .cabecalho-roxo {
+    background-color: var(--roxo);
+  }
+  
+  .borda-roxa {
+    border-color: var(--roxo) !important;
+  }
+  
+  .btn-roxo {
+    background-color: var(--roxo);
+    border-color: var(--roxo);
+    color: #fff;
+  }
+  
+  .btn-roxo:hover,
+  .btn-roxo:focus {
+    background-color: var(--roxo-escuro);
+    border-color: var(--roxo-escuro);
+    color: #fff;
+  }
+  
+  .form-control:focus {
+    border-color: var(--roxo);
+    box-shadow: 0 0 0 0.25rem rgba(111, 66, 193, 0.25);
+  }
+  
+  .pixelada {
+    width: 192px;
+    height: 192px;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+  }
+  
+  .imagem-moldura {
+    width: 220px;
+    height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+    border: 3px solid #212529;
+    border-radius: 8px;
+  }
+  
+  .stat-label {
+    width: 90px;
+    flex-shrink: 0;
+  }
+  
+  .stat-valor {
+    width: 36px;
+    text-align: right;
+    flex-shrink: 0;
+  }

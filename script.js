@@ -1,188 +1,109 @@
-async function buscarPokemon() {
-    const nome = document.getElementById("pokemon").value;
-    const resposta = await fetch(
-        'https:/pokeapi.co/api/v2/pokemon/${nome.toLowerCase()}'
-    );
+const form = document.getElementById('form-busca');
+const campo = document.getElementById('campo-busca');
+const mensagem = document.getElementById('mensagem');
+const resultado = document.getElementById('resultado');
 
-    comst pokemon = await reposta.json();
-    console.log(pokemon);
-    document.getElementById("nome").textContent =   pokemon.name;
-    document.getElementById("imagem").src =
-        pokemon.sprites.front_default;
-    
-}
+const imgPokemon = document.getElementById('img-pokemon');
+const nomeEl = document.getElementById('nome');
+const tiposEl = document.getElementById('tipos');
+const alturaEl = document.getElementById('altura');
+const pesoEl = document.getElementById('peso');
+const statsEl = document.getElementById('stats');
 
-
-const inputPokemon = document.getElementById("pokemon");
-const botaoBuscar = document.getElementById("buscar");
-const mensagem = document.getElementById("mensagem");
-const nome = document.getElementById("nome");
-const numero = document.getElementById("numero");
-const imagem = document.getElementById("imagem");
-const tipos = document.getElementById("tipos");
-const altura = document.getElementById("altura");
-const peso = document.getElementById("peso");
-const hpValor = document.getElementById("hp-valor");
-const ataqueValor = document.getElementById("ataque-valor");
-const defesaValor = document.getElementById("defesa-valor");
-const velocidadeValor = document.getElementById("velocidade-valor");
-const hpBarra = document.getElementById("hp-barra");
-const ataqueBarra = document.getElementById("ataque-barra");
-const defesaBarra = document.getElementById("defesa-barra");
-const velocidadeBarra = document.getElementById("velocidade-barra");
-
-const nomesTipos = {
-    normal: "Normal",
-    fire: "Fogo",
-    water: "Água",
-    electric: "Elétrico",
-    grass: "Planta",
-    ice: "Gelo",
-    fighting: "Lutador",
-    poison: "Veneno",
-    ground: "Terrestre",
-    flying: "Voador",
-    psychic: "Psíquico",
-    bug: "Inseto",
-    rock: "Pedra",
-    ghost: "Fantasma",
-    dragon: "Dragão",
-    dark: "Sombrio",
-    steel: "Aço",
-    fairy: "Fada"
+const TIPOS = {
+  normal:   { nome: 'Normal',   cor: 'secondary' },
+  fire:     { nome: 'Fogo',     cor: 'danger' },
+  water:    { nome: 'Água',     cor: 'primary' },
+  electric: { nome: 'Elétrico', cor: 'warning text-dark' },
+  grass:    { nome: 'Planta',   cor: 'success' },
+  ice:      { nome: 'Gelo',     cor: 'info text-dark' },
+  fighting: { nome: 'Lutador',  cor: 'danger' },
+  poison:   { nome: 'Veneno',   cor: 'dark' },
+  ground:   { nome: 'Terra',    cor: 'warning text-dark' },
+  flying:   { nome: 'Voador',   cor: 'info text-dark' },
+  psychic:  { nome: 'Psíquico', cor: 'danger' },
+  bug:      { nome: 'Inseto',   cor: 'success' },
+  rock:     { nome: 'Pedra',    cor: 'secondary' },
+  ghost:    { nome: 'Fantasma', cor: 'dark' },
+  dragon:   { nome: 'Dragão',   cor: 'primary' },
+  dark:     { nome: 'Sombrio',  cor: 'dark' },
+  steel:    { nome: 'Aço',      cor: 'secondary' },
+  fairy:    { nome: 'Fada',     cor: 'danger' }
 };
 
-async function buscarPokemon() {
+const STATS = [
+  { api: 'hp',      rotulo: 'HP',      cor: 'bg-success' },
+  { api: 'attack',  rotulo: 'Ataque',  cor: 'bg-danger' },
+  { api: 'defense', rotulo: 'Defesa',  cor: 'bg-info' },
+  { api: 'speed',   rotulo: 'Velocid.', cor: 'bg-warning' }
+];
 
-    const pesquisa = inputPokemon.value
-        .trim()
-        .toLowerCase();
-    if (pesquisa === "") {
-        mensagem.textContent =
-            "Digite o nome ou número de um Pokémon.";
-        return;
-    }
-    mensagem.textContent = "Carregando...";
-    try {
-        const resposta = await fetch(
-            `https://pokeapi.co/api/v2/pokemon/${pesquisa}`
-        );
-        if (!resposta.ok) {
-            throw new Error("Pokémon não encontrado");
-        }
-        const pokemon = await resposta.json();
-        mostrarPokemon(pokemon);
-        mensagem.textContent = "";
-    } catch (erro) {
-        mensagem.textContent =
-            "Pokémon não encontrado.";
-    }
-}
-function mostrarPokemon(pokemon) {
+const MAX_STAT = 255;
 
-    nome.textContent = pokemon.name;
-    numero.textContent =
-        `#${String(pokemon.id).padStart(3, "0")}`;
-
-    imagem.src =
-        pokemon.sprites.other["official-artwork"].front_default
-        || pokemon.sprites.front_default;
-
-    imagem.alt = pokemon.name;
-
-    tipos.innerHTML = "";
-
-    pokemon.types.forEach((item) => {
-        const tipoOriginal = item.type.name;
-        const span = document.createElement("span");
-        span.classList.add(
-            "tipo",
-            tipoOriginal
-        );
-        span.textContent =
-            nomesTipos[tipoOriginal] || tipoOriginal;
-        tipos.appendChild(span);
-
-    });
-
-    altura.textContent =
-        `${(pokemon.height / 10).toFixed(1)} m`;
-
-    peso.textContent =
-        `${(pokemon.weight / 10).toFixed(1)} kg`;
-
-    const hp = encontrarStatus(
-        pokemon.stats,
-        "hp"
-    );
-
-    const ataque = encontrarStatus(
-        pokemon.stats,
-        "attack"
-    );
-
-    const defesa = encontrarStatus(
-        pokemon.stats,
-        "defense"
-    );
-
-    const velocidade = encontrarStatus(
-        pokemon.stats,
-        "speed"
-    );
-
-    hpValor.textContent = hp;
-    ataqueValor.textContent = ataque;
-    defesaValor.textContent = defesa;
-    velocidadeValor.textContent = velocidade;
-
-    atualizarBarra(hpBarra, hp);
-    atualizarBarra(ataqueBarra, ataque);
-    atualizarBarra(defesaBarra, defesa);
-    atualizarBarra(velocidadeBarra, velocidade);
+function mostrarMensagem(texto, tipo = 'danger') {
+  mensagem.className = `alert alert-${tipo}`;
+  mensagem.textContent = texto;
 }
 
-function encontrarStatus(stats, nomeStatus) {
-
-    const status = stats.find(
-        (item) => item.stat.name === nomeStatus
-    );
-    return status ? status.base_stat : 0;
+function esconderMensagem() {
+  mensagem.className = 'alert d-none';
 }
 
-function atualizarBarra(barra, valor) {
-    const porcentagem =
-        Math.min((valor / 255) * 100, 100);
-    barra.style.width =
-        `${porcentagem}%`;
+function mostrarPokemon(p) {
+  imgPokemon.src = p.sprites.front_default;
+  imgPokemon.alt = p.name;
+
+  nomeEl.textContent = `${p.name} #${String(p.id).padStart(3, '0')}`;
+
+  tiposEl.innerHTML = p.types.map(t => {
+    const info = TIPOS[t.type.name] || { nome: t.type.name, cor: 'secondary' };
+    return `<span class="badge text-bg-${info.cor} ms-1">${info.nome}</span>`;
+  }).join('');
+
+  alturaEl.textContent = `${(p.height / 10).toFixed(1)} m`;
+  pesoEl.textContent = `${(p.weight / 10).toFixed(1)} kg`;
+
+  statsEl.innerHTML = STATS.map(s => {
+    const valor = p.stats.find(x => x.stat.name === s.api).base_stat;
+    const pct = Math.min(100, (valor / MAX_STAT) * 100);
+    return `
+      <div class="d-flex align-items-center mb-2">
+        <span class="stat-label">${s.rotulo}</span>
+        <div class="progress flex-grow-1" role="progressbar"
+             aria-valuenow="${valor}" aria-valuemin="0" aria-valuemax="${MAX_STAT}">
+          <div class="progress-bar progress-bar-striped ${s.cor}" style="width: ${pct}%"></div>
+        </div>
+        <span class="stat-valor">${valor}</span>
+      </div>`;
+  }).join('');
+
+  resultado.classList.remove('d-none');
 }
-botaoBuscar.addEventListener(
-    "click",
-    buscarPokemon
-);
-inputPokemon.addEventListener(
-    "keydown",
-    function(event) {
 
-        if (event.key === "Enter") {
-            buscarPokemon();
-        }
+async function buscar(termo) {
+  const busca = termo.trim().toLowerCase();
+  if (!busca) {
+    mostrarMensagem('Digite o nome ou o número de um Pokémon.', 'warning');
+    return;
+  }
 
-    }
-);
+  mostrarMensagem('Buscando...', 'info');
 
-buscarPokemonInicial();
-async function buscarPokemonInicial() {
-
-    try {
-        const resposta = await fetch(
-            "https://pokeapi.co/api/v2/pokemon/pikachu&quot";
-        );
-        const pokemon = await resposta.json();
-        mostrarPokemon(pokemon);
-    } catch (erro) {
-        mensagem.textContent =
-            "Não foi possível carregar o Pokémon.";
-
-    }
+  try {
+    const resp = await fetch(`https://pokeapi.co/api/v2/pokemon/${encodeURIComponent(busca)}`);
+    if (!resp.ok) throw new Error('não encontrado');
+    const dados = await resp.json();
+    esconderMensagem();
+    mostrarPokemon(dados);
+  } catch (erro) {
+    resultado.classList.add('d-none');
+    mostrarMensagem('Pokémon não encontrado. Confira o nome (em inglês) ou o número.');
+  }
 }
+
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  buscar(campo.value);
+});
+
+buscar('pikachu');
